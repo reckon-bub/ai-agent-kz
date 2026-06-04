@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-Квалификатор для мебельного бизнеса — Демо</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07080C;
+  --blue: #4D9FFF;
+  --white: #EEF2FF;
+  --gray: #6B7590;
+  --gray-light: #9BA4BC;
+  --border: rgba(77,159,255,0.14);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Syne', sans-serif;
+  background: var(--bg);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px 64px;
+}
+
+/* Grid background */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(77,159,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77,159,255,0.04) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.wrap {
+  position: relative; z-index: 1;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Logo / brand */
+.brand {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--gray);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.brand:hover { color: var(--blue); }
+.brand em { font-style: normal; color: var(--blue); }
+
+/* Eyebrow */
+.eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--blue);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+}
+.eyebrow::before { content: '//'; opacity: 0.4; }
+
+/* Heading */
+h1 {
+  font-size: clamp(24px, 6vw, 36px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  align-self: flex-start;
+}
+h1 em { font-style: normal; color: var(--blue); }
+
+/* Video container — 9:16 */
+.video-wrap {
+  width: 100%;
+  position: relative;
+  border: 1px solid var(--border);
+  background: #0B0F1A;
+  overflow: hidden;
+}
+
+/* Corner accents */
+.video-wrap::before,
+.video-wrap::after {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  z-index: 2; pointer-events: none;
+}
+.video-wrap::before {
+  top: -1px; left: -1px;
+  border-top: 2px solid var(--blue);
+  border-left: 2px solid var(--blue);
+}
+.video-wrap::after {
+  bottom: -1px; right: -1px;
+  border-bottom: 2px solid var(--blue);
+  border-right: 2px solid var(--blue);
+}
+
+.video-wrap video {
+  width: 100%;
+  display: block;
+  /* 9:16 aspect ratio */
+  aspect-ratio: 9/16;
+  object-fit: cover;
+}
+
+/* Bullets */
+.bullets {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--gray-light);
+  line-height: 1.5;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  background: rgba(77,159,255,0.03);
+  transition: background 0.2s, border-color 0.2s;
+}
+.bullet:hover {
+  background: rgba(77,159,255,0.06);
+  border-color: rgba(77,159,255,0.3);
+}
+.bullet-check {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--blue);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 24px;
+  background: var(--blue);
+  color: var(--bg);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.btn-main:hover { background: var(--white); transform: translateY(-2px); }
+
+.btn-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 16px 24px;
+  background: transparent;
+  color: var(--gray-light);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.btn-ghost:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: rgba(77,159,255,0.05);
+}
+
+.btn-icon { font-size: 16px; }
+
+/* Footer note */
+.footer-note {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--gray);
+  letter-spacing: 0.08em;
+  opacity: 0.5;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  body { padding: 32px 16px 48px; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <a href="index.html" class="brand"><em>Ai</em> ENGINEER</a>
+
+  <div style="width:100%;">
+    <div class="eyebrow" style="margin-bottom:12px;">Демо · Мебельный бизнес</div>
+    <h1>AI-квалификатор<br>для <em>мебельного</em><br>бизнеса</h1>
+  </div>
+
+  <!-- VIDEO -->
+  <!-- Положите demo-mebel.mp4 рядом с этим файлом в репозитории -->
+  <div class="video-wrap">
+    <video
+      src="demo-mebel.mp4"
+      controls
+      autoplay
+      muted
+      playsinline
+      poster=""
+    ></video>
+  </div>
+
+  <!-- BULLETS -->
+  <div class="bullets">
+    <div class="bullet">
+      <span class="bullet-check">[✓]</span>
+      Клиент пишет в WhatsApp → бот отвечает мгновенно, в любое время
+    </div>
+    <div class="bullet">
+      <span class="bullet-check">[✓]</span>
+      Квалифицирует: бюджет, тип мебели, сроки — без участия менеджера
+    </div>
+    <div class="bullet">
+      <span class="bullet-check">[✓]</span>
+      Горячий лид автоматически попадает в CRM с заполненной карточкой
+    </div>
+    <div class="bullet">
+      <span class="bullet-check">[✓]</span>
+      Менеджер подключается только к тем, кто уже готов к покупке
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="buttons">
+    <!-- ЗАМЕНИТЕ НА НОМЕР БОТА-ДЕМО -->
+    <a href="https://wa.me/77XXXXXXXXX?text=Привет%2C%20хочу%20попробовать%20демо-бота"
+       class="btn-main" target="_blank" rel="noopener">
+      <span class="btn-icon">💬</span>
+      Попробовать демо-бота в WhatsApp
+    </a>
+
+    <!-- ЗАМЕНИТЕ НА ВАШ ЛИЧНЫЙ НОМЕР -->
+    <a href="https://wa.me/77XXXXXXXXX?text=Привет%2C%20хочу%20записаться%20на%20разбор"
+       class="btn-ghost" target="_blank" rel="noopener">
+      <span class="btn-icon">📞</span>
+      Записаться на разбор (Zoom)
+    </a>
+  </div>
+
+  <p class="footer-note">// Ai Engineer · ИИ-ассистенты для бизнеса · Алматы / Астана</p>
+
+</div>
+
+</body>
+</html>
